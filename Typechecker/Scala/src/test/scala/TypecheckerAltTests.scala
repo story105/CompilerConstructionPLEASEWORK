@@ -8,7 +8,9 @@ import java_cup.runtime._
 import scala.util.{Try, Success, Failure}
 import org.scalatest.FunSuite
 
-class TypecheckerTests extends FunSuite {
+class TypecheckerAltTests extends FunSuite {
+  println("\n\nThis is the test program for TypecheckerAlt\n")
+
   test("Testing bad programs") {
     println("------------ Testing bad programs ------------")
     assert(test("src/test/bad", typeCheckBad))
