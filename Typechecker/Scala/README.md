@@ -18,5 +18,7 @@ src/main/scala/Typechecker.scala is a template for a typechecker in Scala with e
 
 src/main/scala/TypecheckerAlt.scala is a template for a typechecker in Scala with error handling similar to Java
 
+You can choose to impelment your typechecker either in Typechecker.scala or TypecheckerAlt.scala (you could do both). Depending on whether you have used Typechecker.cala/TypecheckerAlt.scala, remove/rename one of the test files TypecheckerTests.scala/TypecheckerAltTests.scala, which is not needed (if you choose to use Typechecker.scala, rename TypecheckerAltTests.scala to TypecheckerAltTests.unused and vice versa)
+
 
   
