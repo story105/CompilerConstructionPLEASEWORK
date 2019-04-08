@@ -11,4 +11,9 @@ src/main/scala conain the files adapted by hand from src/main/java
 
 For documentation produced by 'sbt doc' see Scala/target/scala-2.12/api/index.html
 
+src/main/scala/Typechecker.scala is a template for a typechecker in Scala with error handling similar to Haskell
+
+src/main/scala/TypecheckerAlt.scala is a template for a typechecker in Scala with error handling similar to Java
+
+
   

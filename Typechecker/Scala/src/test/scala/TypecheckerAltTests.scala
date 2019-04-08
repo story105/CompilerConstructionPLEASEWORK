@@ -23,14 +23,14 @@ class TypecheckerTests extends FunSuite {
     var l : Yylex = null
     try { l = new Yylex(new FileReader(file)) } catch {
       case e:IOException => { 
-        return TypecheckerAlt.fail(s"Error: File not found: $file")
+        return Typechecker.fail(s"Error: File not found: $file")
       }
     }
     val p = new Parser(l)
     var prog : Program = null
     try { prog = p.parseProgram } catch {
       case e: Throwable => {
-        return TypecheckerAlt.fail("At line " + 
+        return Typechecker.fail("At line " + 
           String.valueOf(l.line_num()) + 
           ", near \"" + l.buff() + "\" :\n"+
           "     " + e.getMessage())
