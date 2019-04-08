@@ -121,7 +121,8 @@ checkStm env (SReturn e) ty = do
 {-
 Here need to go the missing cases. Once you have all cases you can delete the next line which is only needed to catch all cases that are not yet implemented.
 -}
-checkStm env _ ty = return env 
+checkStm _ s _ = fail $ "Missing case in checkStm encountered: " ++ printTree s
+
 
 inferTypeExp :: Env -> Exp -> Err Type
 inferTypeExp env (EAss e1 e2) = do
@@ -134,7 +135,7 @@ inferTypeExp env (ETyped e ty) = do
 {-
 Here need to go the missing cases. Once you have all cases you can delete the next line which is only needed to catch all cases that are not yet implemented.
 -}
-inferTypeExp env _ = Bad "Missing case in inferTypeExp encountered"
+inferTypeExp _ e = fail $ "Missing case in inferTypeExp encountered: " ++ printTree e
 
 inferTypeOverloadedExp :: Env -> Alternative Type -> Exp -> [Exp] -> Err Type
 inferTypeOverloadedExp env (Alternative ts) e es = do

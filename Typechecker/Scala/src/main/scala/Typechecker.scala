@@ -185,7 +185,7 @@ object Typechecker {
         } yield env1
         case SReturn(exp) => for { _ <- checkExp(env, exp, ty) } yield env
         /** here goes your code, delete the "catch all" statement below when your code is complete **/
-        case e =>  fail("this is unimplemented" + e.print) /**case _ => fail("this is unimplemented " + stm.print)**/
+        case e =>  fail("Missing case in checkStm encountered: " + e.print)
     }
 
     def inferTypeExp(env:Env, exp:Exp) : Try[Type] = exp match {
@@ -195,7 +195,7 @@ object Typechecker {
         } yield ty
         case ETyped(e,ty) => for { _ <- checkExp(env, e, ty) } yield ty
         /** here goes your code, delete the "catch all" statement below when your code is complete **/
-        case e =>  fail("this is unimplemented" + e.print)
+        case e =>  fail("Missing case in inferTypeExp encountered: " + e.print)
     }
 
     def inferTypeOverloadedExp(env:Env, alts:List[Type], e:Exp, es:List[Exp]) : Try[Type] = for {

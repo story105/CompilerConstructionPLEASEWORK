@@ -9,15 +9,13 @@ import scala.util.{Try, Success, Failure}
 import org.scalatest.FunSuite
 
 class TypecheckerTests extends FunSuite {
-  println("\n\nThis is the test program for TypecheckerAlt\n")
+  println("\nThis is the test program for Programming Languages Lab 2 (Typechecker)\n")
 
   test("Testing bad programs") {
-    println("------------ Testing bad programs ------------")
     assert(test("src/test/bad", typeCheckBad))
   }
 
   test("Testing good programs") {
-    println("------------ Testing good programs -----------")
     assert(test("src/test/good", typeCheckGood))
   }
 
@@ -63,8 +61,9 @@ class TypecheckerTests extends FunSuite {
     var passing = true
     progsList.foreach {
       f => fun(f) match {
-        case Success(_) => println(f +": passed")
-        case Failure(e) => { println(f + ": failed\n" + e.toString) ; passing = false }
+        case Success(_) => ()
+        case Failure(TypecheckingException(e)) => { println("Type-checking " + f + " failed\n" + e.toString) ; passing = false }
+        case Failure(e) => { println("Type-checking " + f + " failed\n" + e.toString) ; passing = false }
       }
     }
     return passing

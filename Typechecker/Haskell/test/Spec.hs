@@ -32,9 +32,8 @@ runTest f = do
     prog <- pProgram ts
     typecheck prog
 
-testProgram :: Bool -> FilePath -> IO Bool
-testProgram rev f = do
-  putStrLn $ "Type-checking " ++ f ++ "... "
+testGoodProgram :: FilePath -> IO Bool
+testGoodProgram f = do
   s <- readFile f
   let ts = myLexer s
   err <- return $ do
@@ -44,6 +43,7 @@ testProgram rev f = do
   case err of
     Ok _ -> return True
     Bad err -> do
+        putStrLn $ "Type-checking " ++ f ++ " failed"
         putStrLn err
         return False
 
@@ -87,10 +87,10 @@ getIO f = do
 
 testBadProgram :: FilePath -> IO Bool
 testBadProgram f = do
-  putStrLn $ "Type-checking " ++ f ++ "... "
   err <- runTest f
   case err of
     Ok _ -> do
+      putStrLn $ "Type-checking " ++ f ++ " failed"
       putStrLn "Should not type-check"
       return False 
     Bad err -> do
@@ -99,7 +99,7 @@ testBadProgram f = do
 
 runTests :: ([FilePath],[FilePath]) -> IO ([Bool],[Bool])
 runTests (goodProgs,badProgs) = do 
-  good <- mapM (testProgram False) goodProgs
+  good <- mapM testGoodProgram goodProgs
   bad  <- mapM testBadProgram badProgs
   return (good,bad)
 

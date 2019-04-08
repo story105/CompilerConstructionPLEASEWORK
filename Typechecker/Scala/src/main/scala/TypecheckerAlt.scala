@@ -193,7 +193,7 @@ object TypecheckerAlt {
             checkExp(env, exp, ty)
             return env
         }
-        case e  => throw TypecheckingException("this is unimplemented" + e.print)
+        case s => throw TypecheckingException("Missing case in checkStm encountered: " + s.print)
     }
 
 
@@ -209,7 +209,7 @@ object TypecheckerAlt {
             return ty
         }
         /** here goes your code, delete the "catch all" statement below when your code is complete **/
-        case e  => throw TypecheckingException("this is unimplemented" + e.print)
+        case e  => throw TypecheckingException("Missing case in inferTypeExp encountered: " + e.print)
     }
 
     @throws[TypecheckingException]
