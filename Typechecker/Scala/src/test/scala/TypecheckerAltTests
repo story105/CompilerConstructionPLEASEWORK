@@ -42,8 +42,8 @@ class TypecheckerTests extends FunSuite {
   def typeCheckBad(file:File) : Try[Unit] = for {
     prog <- parseFile(file)
     ret <- TypecheckerAlt.typecheck(prog) match {
-        case Success(_) => TypecheckerAlt.fail("Should not typecheck")
-        case _ => TypecheckerAlt.ok
+        case Success(_) => Typechecker.fail("Should not typecheck")
+        case _ => Typechecker.ok
       }
   } yield ret
   
