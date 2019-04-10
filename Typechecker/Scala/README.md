@@ -1,5 +1,5 @@
 # CPPTypeCheckerScala
-A type checker for a subset of C++ written in Scala
+A type checker for a subset of C++ written in Scala.
 
 Set up and written by Samuel Balco following Chapter 4 of [Implementing Programming Languages]() by Aarne Ranta and the corresponding [Assignment 2]().
 
