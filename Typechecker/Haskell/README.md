@@ -1,5 +1,9 @@
 # CPPTypeChecker
 
+A type checker for a subset of C++ written in Hasekell.
+
+Set up and written by Samuel Balco following Chapter 4 of [Implementing Programming Languages]() by Aarne Ranta and the corresponding [Assignment 2](http://www.grammaticalframework.org/ipl-book/assignments/assignment1/assignment1.html).
+
 To compile run `stack build` and to test run `stack test`
 
 The files produced by bnfc are in src:
