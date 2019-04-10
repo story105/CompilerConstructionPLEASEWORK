@@ -1,7 +1,7 @@
 # CPPTypeCheckerScala
 A type checker for a subset of C++ written in Scala.
 
-Set up and written by Samuel Balco following Chapter 4 of [Implementing Programming Languages]() by Aarne Ranta and the corresponding [Assignment 2]().
+Set up and written by Samuel Balco following Chapter 4 of [Implementing Programming Languages](http://www.grammaticalframework.org/ipl-book/) by Aarne Ranta and the corresponding [Assignment 2](http://www.grammaticalframework.org/ipl-book/assignments/assignment2/assignment2.html).
 
 
 To run you need to install [SBT](https://www.scala-sbt.org/download.html), then inside the project run `sbt test` to run the test suite. (And run it twice if you get "error: error while loading String, class file '/modules/java.base/java/lang/String.class' is broken" ... this error should disappear the second time.) (To see or change what `sbt test` is doing look at src/test/scala/TypecheckerTests.scala or src/test/scala/TypecheckerAltTests.scala)
