@@ -10,6 +10,11 @@ The files produced by bnfc are in src:
 	ParCpp.hs
 	PrintCpp.hs
 
-Can I build without the Interpreter.hs?
+The template for the typechecker is in `TypeChecker.hs`. This where you find the code that you need to complete.
+
+To know which cases you need to add, look at the grammar as well as at the algebraic data type for abstract syntax trees define din `AbsCpp.hs`.
+
+The error monad that is used to modify the type `Type` of CPP-types is defined in `ErrM.hs`.
+
 
 
