@@ -2,7 +2,7 @@
 
 A type checker for a subset of C++ written in Hasekell.
 
-Set up and written by Samuel Balco following Chapter 4 of [Implementing Programming Languages]() by Aarne Ranta and the corresponding [Assignment 2](http://www.grammaticalframework.org/ipl-book/assignments/assignment1/assignment1.html).
+Set up and written by Samuel Balco following Chapter 4 of [Implementing Programming Languages](http://www.grammaticalframework.org/ipl-book/) by Aarne Ranta and the corresponding [Assignment 2](http://www.grammaticalframework.org/ipl-book/assignments/assignment2/assignment2.html).
 
 To compile run `stack build` and to test run `stack test`
 
