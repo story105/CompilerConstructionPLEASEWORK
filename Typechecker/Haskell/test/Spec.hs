@@ -21,7 +21,7 @@ listCCFiles dir =
 
 
 welcome :: IO ()
-welcome = do putStrLn $ bold++"\n\nThis is the test program for Programming Languages Lab 2\n" ++ normal
+welcome = do putStrLn $ highlight ++ "\n\nThis is the test program for Programming Languages Lab 2\n" ++ normal
 
 
 runTest :: FilePath -> IO (Err ())
@@ -44,7 +44,7 @@ testGoodProgram f = do
     Ok _ -> return True
     Bad err -> do
         putStrLn $ "Type-checking " ++ f ++ " failed"
-        putStrLn err
+        putStrLn $ bold ++ err ++ normal
         return False
 
 {-
