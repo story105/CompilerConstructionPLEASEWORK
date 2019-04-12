@@ -1,4 +1,4 @@
-# compilers-assignments
+# compiler-assignments
 
 Clone the repository into the repo that you use for the solutions of the assignments for the course on compiler construction.
 
