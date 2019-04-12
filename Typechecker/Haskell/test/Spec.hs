@@ -44,7 +44,7 @@ testGoodProgram f = do
     Ok _ -> return True
     Bad err -> do
         putStrLn $ "Type-checking " ++ f ++ " failed"
-        putStrLn $ bold ++ err ++ normal
+        putStrLn $ fgcol red ++ err ++ normal
         return False
 
 {-
