@@ -125,6 +125,9 @@ checkStm _ s _ = fail $ "Missing case in checkStm encountered: " ++ printTree s
 
 
 inferTypeExp :: Env -> Exp -> Err Type
+inferTypeExp env (EInt _) = return Type_int
+inferTypeExp env (ETimes e1 e2) = 
+    inferTypeOverloadedExp env (Alternative [Type_int,Type_double]) e1 [e2]
 inferTypeExp env (EAss e1 e2) = do
     ty <- inferTypeExp env e1
     checkExp env e2 ty
