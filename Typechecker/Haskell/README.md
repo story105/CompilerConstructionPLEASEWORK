@@ -6,6 +6,8 @@ Set up and written by Samuel Balco following Chapter 4 of [Implementing Programm
 
 To compile run `stack build` and to test run `stack test`
 
+To run typechecking on a specific file, run `stack exec CPPTypeChecker-exe <file_path>.cc`
+
 The files produced by bnfc are in src:
 
 	AbsCpp.hs
