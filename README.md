@@ -16,8 +16,6 @@ To get you started Samuel Balco implemented the type checker in Haskell and Scal
 
 - Java has the advantage that it is the most familiar language to you. It also will give you the full experience as you are asked to produce the Java files you need using bnfc. If you have some previous experience with Java you should be able to see how to proceed from there by looking at Chapter 4 of the book and the Scala template file for the typechecker.
 
-I keep an updating [list with tips](https://hackmd.io/s/Hk-f2YjcE).
-
 
 ## Assignment Interpreter (tbc)
 
