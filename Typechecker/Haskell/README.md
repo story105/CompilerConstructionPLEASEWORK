@@ -23,4 +23,5 @@ To know which cases you need to add, look at the grammar as well as at the algeb
 The error monad that is used to modify the type `Type` of CPP-types is defined in `ErrM.hs`.
 
 
+I keep an updating [list with tips](https://hackmd.io/s/Hk-f2YjcE).
 
