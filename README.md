@@ -17,9 +17,17 @@ To get you started Samuel Balco implemented the type checker in Haskell and Scal
 - Java has the advantage that it is the most familiar language to you. It also will give you the full experience as you are asked to produce the Java files you need using bnfc. If you have some previous experience with Java you should be able to see how to proceed from there by looking at Chapter 4 of the book and the Scala template file for the typechecker.
 
 
-## Assignment Interpreter (tbc)
+## Assignment Interpreter 
 
+The assignment is detailed [here](http://www.grammaticalframework.org/ipl-book/assignments/assignment3/assignment3.html).
 
+To implement the typechecker I suggest that you use one of the following languages: Java, Scala, or Haskell.
+
+Again we provided template files for Haskell and Scala. 
+
+You can implement the interpreter without having a typechecker. (Just don't be surprised if curious things then happen if you run the interpreter on "bad" programs.)
+
+In any case you need to test your interpreter on all the (good) test files, see [here](https://github.com/ChapmanCPSC/compiler-assignments/tree/master/Interpreter/Haskell/test/good) or [here](https://github.com/ChapmanCPSC/compiler-assignments/tree/master/Interpreter/Scala/src/test/good).
 
 
 
