@@ -156,26 +156,31 @@ evalStms (s:tms) = do
 
 
 evalStm :: Interpreter i => Stm -> i (Maybe Value)
+evalStm (SExp e) = do
+    evalExp e
+    return Nothing
+evalStm (SDecls _ ids) = do
+    mapM (\i -> extendContext i VUndefined) ids
+    return Nothing
 {-
-evalStm (SExp e) = 
-evalStm (SDecls _ ids) = 
 evalStm (SInit _ i e) = 
 evalStm SReturnVoid = 
 -}
 evalStm (SReturn e) = do
     v <- evalExp e
     return $ Just v
+
+evalStm (SBlock stms) = pushPop $ evalStms stms
 {-
 evalStm (SWhile e stm) = 
-evalStm (SBlock stms) = 
 evalStm (SIfElse e stm1 stm2) = 
 -}
 evalStm stm = 
     fail $ "Missing case in evalStm " ++ printTree stm ++ "\n"
 
 evalExp :: Interpreter i => Exp -> i Value
+evalExp ETrue = return VTrue
 {-
-evalExp ETrue = 
 evalExp EFalse = 
 -}
 evalExp (EInt i) = return $ VInt i
@@ -183,16 +188,54 @@ evalExp (EInt i) = return $ VInt i
 evalExp (EDouble d) = 
 evalExp (EString _) = 
 evalExp (EId i) = 
-evalExp (EApp i exps) = 
-evalExp (EPIncr e@(EId i)) = 
-evalExp (EPIncr e) = 
+-}
+evalExp (EApp i exps) = do
+    vals <- mapM evalExp exps
+    case (i, vals) of
+        (Id "printInt", [VInt i]) -> do
+            printInt i
+            return VVoid
+        (Id "printInt", _) -> fail $ "Internal error, printInt not supplied with correct arguments."
+        (Id "printDouble", [VDouble d]) -> do
+            printDouble d
+            return VVoid
+        (Id "printDouble", _) -> fail $ "Internal error, printDouble not supplied with correct arguments."
+        (Id "readInt", []) -> do
+            i <- readInt
+            return $ VInt i
+        (Id "readInt", _) -> fail $ "Internal error, readInt not supplied with correct arguments."
+        (Id "readDouble", []) -> do
+            d <- readDouble
+            return $ VDouble d
+        (Id "readDouble", _) -> fail $ "Internal error, readDouble not supplied with correct arguments."
+        _ -> do
+            (DFun ty _ args stms) <- lookupSig i
+            val <- pushPop $ do
+                mapM (\(i, v) -> extendContext i v) (zip [i | (ADecl _ i) <- args] vals)
+                evalStms stms
+            case val of
+                Just v -> return v
+                Nothing -> 
+                    if ty == Type_void then
+                        return VVoid
+                    else
+                        fail $ "Function " ++ printTree i ++ " should return a value."
+evalExp (EPIncr e@(EId i)) = do
+    val <- evalExp e
+    val' <- addValue val (VInt 1)
+    updateContext i val'
+    return val
+evalExp (EPIncr e) = fail $ "Expected " ++ printTree e ++ " to be an id."
+{-
 evalExp (EPDecr e@(EId i)) = 
 evalExp (EPDecr e) = 
 evalExp (EIncr e@(EId i)) = 
 evalExp (EIncr e) = 
 evalExp (EDecr e@(EId i)) = 
 evalExp (EDecr e) = 
-evalExp (ETimes e1 e2) = 
+-}
+evalExp (ETimes e1 e2) = applyFun mulValue e1 e2
+{-
 evalExp (EDiv e1 e2)   = 
 evalExp (EPlus e1 e2)  = 
 evalExp (EMinus e1 e2) = 
