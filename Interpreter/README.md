@@ -11,6 +11,6 @@ The latter is important, because if the interpreter does not give the right resu
 - guess what could cause the problem and change `Interpreter.hs`
 - iterate all of the above
 
-The reason why debugging the interpreter is more difficult than debugging the typechecker is that the interpreter is not purely compositional in the abstract syntax. For example, even if it looks as if a wrong interpretation of `SWhile` might be resonsible for an infinite loop, the problem could also lie in any of the cases (eg `Sif`, `SDecl`, `SInit`, `EAss`, etc) as they all change the environment and therefore can change the values of the variable involved in testing the condition responsible for entering the `while`.
+The reason why debugging the interpreter is more difficult than debugging the typechecker is that the interpreter is not purely compositional in the abstract syntax. For example, even if it looks as if a wrong interpretation of `SWhile` might be resonsible for an infinite loop, the problem could also lie in any of the cases (eg `Sif`, `SDecl`, `SInit`, `EAss`, etc) as they all change the environment and therefore can change the values of the variables involved in testing the condition responsible for entering the `while`.
 
 If all of this does not help, save this particular program for the end and try to get the interpreter first working on all of the other programs. If you are lucky, this will already solve the problem of `program.cc` as well.
