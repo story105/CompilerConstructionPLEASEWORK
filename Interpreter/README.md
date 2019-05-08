@@ -1,8 +1,8 @@
 # README.md
 
-For the Haskell an Scala version we provide a testing environment that allows to automatically test against all test programs, but also to test just one particular program.
+For the Haskell an Scala version we provide a testing environment that allows **to automatically test against all test programs**, but also to test just one particular program.
 
-The latter is important, because if the interpreter does not give the right result on a particular `program.cc` (such as, for example, looping infinitely), the way forward is to
+**To test and study particular programs** is important, if the interpreter does not give the right result on a particular `program.cc` (such as, for example, looping infinitely). The way forward then is to
 
 - make  `program.cc` so small that the error does not occur anymore
 - make  `program.cc` bigger so that the error comes back
