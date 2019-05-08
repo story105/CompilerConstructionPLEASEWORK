@@ -7,6 +7,7 @@ To compile run `stack build` and to run all tests do
     
 To test a particular `program.cc` do
 
+    stack build
     stack exec CPPInterpreter-exe ./test/good/program.cc
     
 This is particularly helpful if the interpreter loops infinitely on `program.cc`. In this case, 
