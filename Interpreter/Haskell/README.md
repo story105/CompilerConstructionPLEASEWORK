@@ -1,4 +1,4 @@
-# CPPTypeChecker
+# CPP Interpreter in Haskell
 
 
 To compile run `stack build` and to test, run `stack exec CPPInterpreter-exe <path_to_file>`
