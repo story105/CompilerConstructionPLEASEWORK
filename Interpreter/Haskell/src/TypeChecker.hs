@@ -1,6 +1,6 @@
 
 
--- please replace this file with your implementation of TypeChecker.hs from the previous assignment --
+-- you may replace this file with your implementation of TypeChecker.hs from the previous assignment or just keep it as it is --
 
 
 module TypeChecker ( typecheck ) where
