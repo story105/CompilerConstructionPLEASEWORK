@@ -4,7 +4,7 @@ Clone this repository into the repo that you use for the solutions of the assign
 
 ## Assignment Typechecker 
 
-**first deadline April ... , second deadline April ...**
+**first deadline April 13, second deadline April 20**
 
 The assignment is detailed [here](http://www.grammaticalframework.org/ipl-book/assignments/assignment2/assignment2.html).
 
