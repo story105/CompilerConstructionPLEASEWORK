@@ -8,6 +8,9 @@ Clone this repository into the repo that you use for the solutions of the assign
 
 The assignment is detailed [here](http://www.grammaticalframework.org/ipl-book/assignments/assignment2/assignment2.html).
 
+Also read [Typechecker/Haskell/README.md](https://github.com/ChapmanCPSC/compiler-assignments/blob/master/Typechecker/Haskell/README.md) and the [list with Haskell tips](https://hackmd.io/nVQP-fp-TEWUbp9kecaLTQ).
+
+
 
 ### Introductory Remarks
 
