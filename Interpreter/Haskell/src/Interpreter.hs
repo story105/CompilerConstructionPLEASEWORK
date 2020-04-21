@@ -130,7 +130,7 @@ push = modifyEnv $ \(sig, ctxts) -> (sig, M.empty:ctxts)
 
 pop :: Interpreter i => i ()
 pop = modifyEnv' $ \(sig, ctxt) -> case ctxt of
-        [] -> fail $ "Internal error, can't pop an enpty context."
+        [] -> fail $ "Internal error, can't pop an empty context."
         (c:txt) -> return (sig, txt)
 
 

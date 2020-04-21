@@ -26,6 +26,8 @@ The error monad that is used to modify the type `Type` of CPP-types is defined i
 
 I keep an updating [list with Haskell tips](https://hackmd.io/nVQP-fp-TEWUbp9kecaLTQ).
 
+To look up the type of built-in functions, search the functions at hoogle, see for example [foldM at hoogle](https://hoogle.haskell.org/?hoogle=foldM). Don't forget to click on the little plus sign for a description of how `foldM` works.
+
 ### Further Sources/Helpful links for Haskell
 
 (Thanks to Austin Bohannon and Sam Kagan)

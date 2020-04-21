@@ -59,7 +59,7 @@ To get you started Samuel Balco implemented the type checker in Haskell and Scal
 
 The assignment is detailed [here](http://www.grammaticalframework.org/ipl-book/assignments/assignment3/assignment3.html).
 
-To implement the interpreter I suggest that you use Haskell.
+To implement the interpreter I suggest that you use Haskell. Don't forget the [Haskell Tips](https://github.com/ChapmanCPSC/compiler-assignments/blob/master/Typechecker/Haskell/README.md) from the typechecker assignment. 
 
 Again we provided template files for Haskell and Scala. 
 
