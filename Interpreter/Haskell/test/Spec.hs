@@ -51,7 +51,8 @@ testProgram f = do
       -- let res' = runStateT (exec prog) (IIO ins []) -- :: Err ((), IIO)
       case res' of
         Ok (_, IIO _ out') -> 
-          if out == reverse out' then 
+          if out == reverse out' then do
+            putStrLn $ "The program " ++ f ++ " is OK"
             return True
           else
             do
