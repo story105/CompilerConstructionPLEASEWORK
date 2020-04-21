@@ -55,6 +55,8 @@ To get you started Samuel Balco implemented the type checker in Haskell and Scal
 
 ## Assignment Interpreter  
 
+**first deadline April 22, second deadline April 29**
+
 The assignment is detailed [here](http://www.grammaticalframework.org/ipl-book/assignments/assignment3/assignment3.html).
 
 To implement the interpreter I suggest that you use Haskell.
