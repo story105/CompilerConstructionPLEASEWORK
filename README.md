@@ -55,11 +55,9 @@ To get you started Samuel Balco implemented the type checker in Haskell and Scal
 
 ## Assignment Interpreter  
 
-**(deadline tba)**
-
 The assignment is detailed [here](http://www.grammaticalframework.org/ipl-book/assignments/assignment3/assignment3.html).
 
-To implement the typechecker I suggest that you use Haskell.
+To implement the interpreter I suggest that you use Haskell.
 
 Again we provided template files for Haskell and Scala. 
 
@@ -67,6 +65,23 @@ You can implement the interpreter without having a typechecker. (Just don't be s
 
 In any case you need to test your interpreter on all the (good) test files, see [here](https://github.com/ChapmanCPSC/compiler-assignments/tree/master/Interpreter/Haskell/test/good) or [here](https://github.com/ChapmanCPSC/compiler-assignments/tree/master/Interpreter/Scala/src/test/good).
 
+**Deadline April 22**
+
+- Change directory to  `Interpreter/Haskell` and run `stack build` and then `stack test`. Among other output, you should see
+
+      Good programs: passed 10 of 75 tests
+
+  To see which are the good programs run `stack test | grep OK`. Look at these programs in `test/good/` to get an idea of what the interpreter can already do and study the functions `evalStm` and `evalExp` in `src/Interpreter.hs`. Try to understand the grand outlines of how these two functions interpret the 10 passing programs.
+
+- Look at the program `easy_add.cc`. Draw the abstract syntax tree in your mind or using bnfc. Which missing case of the `evalExp` do you need to implement in order for the interpreter to work on this program?
+
+- Extend `Interpreter.hs` so that it interpretes correctly `easy.add`. Hint: Study the case of `ETimes` that is already implemented.
+
+- Hand in on github your solution by the end of April 22.
+
+**Deadline April 29**
+
+Implement the remaining cases so that the interpreter passes all test programs.
 
 
 
