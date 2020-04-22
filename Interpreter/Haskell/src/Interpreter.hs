@@ -10,7 +10,7 @@ import Data.Map ( Map )
 import qualified Data.Map as M
 import Control.Monad.State ( MonadState, StateT, get, put, modify, foldM, liftIO, lift )
 
-
+-- stores both types (VInt, VDouble, VVoid) and values (Integer or Double)
 data Value = VInt Integer
            | VDouble Double
            | VVoid
@@ -39,6 +39,7 @@ class MonadState Env i => Interpreter i where
         setEnv env'
 
 
+-- interpreted program runs in the IO monad to interact via the terminal
 instance Interpreter (StateT Env IO) where
     printInt i = liftIO $ putStrLn $ show i
     printDouble d = liftIO $ putStrLn $ show d
@@ -55,6 +56,7 @@ data IIO = IIO {
 }
 
 
+-- used for testing reading test/<filename>.inputs and comparing to test/<filename>.outputs
 instance Interpreter (StateT Env (StateT IIO Err)) where
     printInt i = lift $ modify (\io@IIO{..} -> io{outputs = VInt i:outputs}) 
     printDouble d = lift $ modify (\io@IIO{..} -> io{outputs = VDouble d:outputs}) 
@@ -135,7 +137,13 @@ pop = modifyEnv' $ \(sig, ctxt) -> case ctxt of
 
 
 pushPop :: Interpreter i => i a -> i a
-pushPop f = push >> f >>= \a -> pop >> return a
+-- pushPop f = push >> f >>= \v -> pop >> return v) 
+-- pushPop f = push >> ( f >>= ( \v -> (pop >> return v) ) )
+pushPop f = do
+    push
+    v <- f
+    pop 
+    return v
 
 
 exec :: Interpreter i => Program -> i ()
@@ -146,7 +154,7 @@ exec (PDefs defs) = do
     evalStms stms
     return ()
 
-
+-- Maybe Value: Use "Just" for SReturn, SReturnVoid, "Nothing" for the other cases. 
 evalStms :: Interpreter i => [Stm] -> i (Maybe Value)
 evalStms [] = return Nothing
 evalStms (s:tms) = do
@@ -260,7 +268,7 @@ applyFun f e1 e2 = do
     v2 <- evalExp e2
     f v1 v2
 
-
+-- computes both the new type (VInt or VDouble) and the new value
 addValue :: Interpreter i => Value -> Value -> i Value
 addValue (VInt    u) (VInt    v) = return $ VInt $ u + v
 addValue (VDouble u) (VDouble v) = return $ VDouble $ u + v
