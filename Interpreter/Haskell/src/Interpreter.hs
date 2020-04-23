@@ -137,7 +137,7 @@ pop = modifyEnv' $ \(sig, ctxt) -> case ctxt of
 
 
 pushPop :: Interpreter i => i a -> i a
--- pushPop f = push >> f >>= \v -> pop >> return v) 
+-- pushPop f = push >> f >>= \v -> pop >> return v
 -- pushPop f = push >> ( f >>= ( \v -> (pop >> return v) ) )
 pushPop f = do
     push
