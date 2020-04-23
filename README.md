@@ -29,26 +29,32 @@ To get you started Samuel Balco implemented the type checker in Haskell and Scal
 ### Details
 
 - **Deadline April 13:**
-    
-    - The provided template already passes two good programs. Which programs are this? 
-    - Find the functions `checkStm` and `inferTypeExp` in `TypeChecker.hs`. Which typechecking rules are already implemented?
-      - Hint: Find and open the file `AbsCPP.hs`. Find the data types `Stm` and `Exp`. These are the data types of our abstract syntax tree. Each line in the definition of `Stm` or `Exp` corresponds to a line in the grammar. The typechecker works by induction (or recursion) over this data type. For each case in the data type there must be a corresponding case  in `checkStm` or `inferTypeExp`.
-    - Find and open the program `easy_add.cc`. Which rule needs to be implemented to typecheck the program `easy_add.cc`?
-      - Hint: This may look complicated at first sight, but notice that the typechecking for multiplication is already implemented in the template. 
+    - Change directory to `Typechecker/Haskell` and [README](https://github.com/ChapmanCPSC/compiler-assignments/blob/master/Typechecker/Haskell/README.md). Run `stack build` and `stack test`.
+    - The provided template `src/TypeChecker.hs` already passes two good programs in `test/good/`. Which programs are this? 
+    - Find the functions `checkStm` and `inferTypeExp` in `TypeChecker.hs`. Which typechecking rules are already implemented? Hint:
+      - Find and open the file `AbsCPP.hs`. Find the data types `Stm` and `Exp`. These are the data types of our abstract syntax tree. 
+      - Each line in the definition of `Stm` or `Exp` corresponds to a line in the grammar [cpp.cf](https://github.com/alexhkurz/compiler-construction-2020/blob/master/Sources/Cpp/cpp.cf). Open the grammar in an editor and compare it line by line with `AbsCPP.hs`.
+      - The typechecker works by induction (or recursion) over the data types `Stm` and `Exp`. For each line in the data type there must be a corresponding case  in `checkStm` or `inferTypeExp`.
+    - Find and open the program `easy_add.cc`. 
+      - What is the abstract syntax tree of `easy_add.cc`? Hint: 
+        - Use [bnfc](bnfc-tutorial-short.md) to create a parser from the grammar [cpp.cf](https://github.com/alexhkurz/compiler-construction-2020/blob/master/Sources/Cpp/cpp.cf).
+         - Then use the parser to create the linearized abstract syntax tree of `easy_add.cc`.
+      - Which rule needs to be implemented to typecheck the program `easy_add.cc`? Hint: `PDefs`, `Dfun` and number of other cases are already implemented in `TypeChecker.hs`.
+      - Add the corresponding code to the `inferTypeExp` function of `TypeChecker.hs`. Hint: This may look complicated at first sight, but notice that the typechecking for multiplication is already implemented in the template. 
       - After adding the typechecking rule for addition, you should get upon running `stack build` and `stack test`
 
             Good programs: passed 3 of 76 tests
             Bad programs:  passed 74 of 74 tests
 
     - Which two rules need to be implemented to typecheck the program `ass_easy.cc`?
-      - Hint: If you run `stack exec CPPTypeChecker-exe ass_easy.cc` you will get a hint of what the missing rule it. 
+      - Hint: If you run `stack exec CPPTypeChecker-exe ass_easy.cc` you will get a hint of what the missing rule is. 
       - Hint: To implement the rule, note that you can return a value without writing `return`. In fact, `return` is only needed if you want to typecast a value of type `Env` into a value of type `Err Env`. For now, you can more or less ignore the difference between `Env` and `Err Env`: While `Env` is the type of environments, a value of type `Err Env` is either an environment or an error message. 
     - After building and testing you should now get:
       
             Good programs: passed 5 of 76 tests
             Bad programs:  passed 73 of 74 tests
 
-    - Remark: At the beginning you should focus on increasing the number of passed good programs.
+    - Remark: At the beginning you should focus on increasing the number of passed good programs. And it is probably easier to do first the expressions and then the statements.
 
 - **Deadline April 20:** Implement the remaining cases until you pass all test programs. As shown above it may be good to pick a short and easy good test program and think about what is needed to make the typechecker pass it.
 
