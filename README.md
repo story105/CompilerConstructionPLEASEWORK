@@ -37,7 +37,7 @@ To get you started Samuel Balco implemented the type checker in Haskell and Scal
       - The typechecker works by induction (or recursion) over the data types `Stm` and `Exp`. For each line in the data type there must be a corresponding case  in `checkStm` or `inferTypeExp`.
     - Find and open the program `easy_add.cc`. 
       - What is the abstract syntax tree of `easy_add.cc`? Hint: 
-        - Use [bnfc](bnfc-tutorial-short.md) to create a parser from the grammar [cpp.cf](https://github.com/alexhkurz/compiler-construction-2020/blob/master/Sources/Cpp/cpp.cf).
+        - Use [bnfc](https://github.com/alexhkurz/compiler-construction-2020/blob/master/bnfc-tutorial-short.md) to create a parser from the grammar [cpp.cf](https://github.com/alexhkurz/compiler-construction-2020/blob/master/Sources/Cpp/cpp.cf).
          - Then use the parser to create the linearized abstract syntax tree of `easy_add.cc`.
       - Which rule needs to be implemented to typecheck the program `easy_add.cc`? Hint: `PDefs`, `Dfun` and number of other cases are already implemented in `TypeChecker.hs`.
       - Add the corresponding code to the `inferTypeExp` function of `TypeChecker.hs`. Hint: This may look complicated at first sight, but notice that the typechecking for multiplication is already implemented in the template. 
