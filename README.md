@@ -91,5 +91,10 @@ In any case you need to test your interpreter on all the (good) test files, see 
 
 Implement the remaining cases so that the interpreter passes all test programs.
 
+## Assignment Compiler
 
+**starts April 30, first deadline May 1, second deadline May 10**
 
+For the first deadline do the exercise in [Lecture 12.1](https://github.com/alexhkurz/compiler-construction-2020/blob/master/lecture-12.1.md).
+
+Details for the 2nd deadline will be announced.
