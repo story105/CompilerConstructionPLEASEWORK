@@ -97,4 +97,181 @@ Implement the remaining cases so that the interpreter passes all test programs.
 
 For the first deadline do the exercise in [Lecture 12.1](https://github.com/alexhkurz/compiler-construction-2020/blob/master/lecture-12.1.md).
 
-Details for the 2nd deadline will be announced.
+For the second deadline complete the template file `test/Compiler.hs`.
+
+To get started, I suggest the following.
+
+- Change directory to `Compiler` and run `stack test`. You should see that no tests are passed.
+
+- The simplest test program is `test/good/return_42.cc`, displayed below.
+
+      int main() {
+        return 42;
+      }
+
+  Our first task will be to extend `Compiler.hs` so that it passes `return_42.cc`. In particular, we have to complete the definition of
+
+      compileStm :: MonadState Env m => Stm -> m [SExp]
+
+  and of 
+
+      compileExp :: MonadState Env m => Nesting -> Exp -> m [SExp]
+
+- Here, `SExp` does not refer to the eponymous rule in the grammar, but is short for S-expression. Let us have a look at the definition of `SExp` in the compiler:
+
+      data SExp = Atom String | List [SExp] deriving Eq
+
+  In words, an `SExp` is either a string labelled by `Atom` or a list of `SExp`s. This is the datatype that the compiler uses for Webassembly output. To see an example, find  
+  
+      test = s_module [
+              s_import "readInt" [] s_i32,
+              s_import "readDouble" [] s_f64,
+              s_import "printInt" [s_i32] s_void,
+              s_import "printDouble" [s_f64] s_void,
+              s_func "main" [] s_i32 [
+                  s_local "i" s_f64,
+                  s_call "readDouble",
+                  s_local_set "i",
+                  s_local_get "i",
+                  s_call "printDouble",
+                  s_i32_const 0
+              ],
+              s_export "main"
+          ]
+  
+  in the compiler and run 
+  
+      stack ghci
+      putStrLn $ pprint test
+      
+  The first line brings up the Haskell REPL and the second then generates the following Webassembly program in Wat-format.
+
+      (module
+       (import "env" "readInt" (func $readInt (result i32)))
+       (import "env" "readDouble" (func $readDouble (result f64)))
+       (import "env" "printInt" (func $printInt (param i32)))
+       (import "env" "printDouble" (func $printDouble (param f64)))
+       (func
+        $main
+        (result i32)
+        (local $i f64)
+        (call $readDouble)
+        (local.set $i)
+        (local.get $i)
+        (call $printDouble)
+        (i32.const 0)
+       )
+       (export "main" (func $main))
+      )
+
+  If you want to see the details of how the translation from `SExp` to Webassembly (Wat, to be precise) works, find the definition of `pprint` in the compiler.
+
+- To summarise this excursion into `SExp` think of it as an intermediate representation that provides a suitable output format for the compiler and at the same time is very close already to Wat programs.
+
+- Let us return to the task of generating Wat-code from `return_42.cc`. 
+
+- As we have done above for the typechecker, we use the bnfc generated parser to obtain the abstract syntax tree of `return_42.cc`. This tells us that we need to implement `EInt` in `compileExp` and `SReturn` in `compileStm`.
+
+- Let us start with `EInt`. 
+  - We need to consider that at the top level expressions do not return a result (checkout the rule `SExp` of the grammar). 
+  - To deal with this, the compiler makes a distinction between `TopLevel` and `Nested` (checkout the definition of `data Nesting` in `Compiler.hs`). 
+  - Finally, we need to generate code. For this we use the `s_`-functions defined at the beginning of the compiler. Each `s_`-function returns an `SExp`. Reading throug the definitions from `s_i32` to `s_f64_ne`, you will recognize the Webassembly code we have written by hand in the lectures. For example, we find there
+
+        s_i32_const i = List [Atom "i32.const", Atom (show i)]
+
+    which will output the Webassembly fragment `i32.const i` (with `i` replaced by its value). 
+    
+
+  - Finally, we can implement the case `SExp`
+  
+        compileExp n (EInt i) = return $ if n == Nested then [s_i32_const i] else []
+
+- We continue with `SReturn`, that is we need to complete the definition of 
+
+      compileStm (SReturn e) = do
+
+  In this case, `e` is a nested expression. So we continue the recursion with
+
+      compileStm (SReturn e) = do
+      s_e <- compileExp Nested e
+
+  and then return
+
+      return $ 
+      s_e ++ 
+      [s_return]
+
+  To see that this is correct run (in the Haskell REPL, see above)
+
+      putStrLn $ pprint $ s_module ([s_i32_const 1]++[s_return])
+  
+  which indeed is the output you would expect from your knowledge of Webassembly.
+
+- Use `Cntr-d` to exit the Haskell REPL.
+
+- Putting things together, we can now run `stack test | grep Success` on the modified `Compiler.hs` and should obtain
+
+      Successfully compiled to Wasm: ass_in_arith.cc
+      Successfully compiled to Wasm: ass_in_cmp.cc
+      Successfully compiled to Wasm: ass_many.cc
+      Successfully compiled to Wasm: ass_var_to_var.cc
+      Successfully run: ass_var_to_var.cc
+      Successfully compiled to Wasm: branch_value_leaks.cc
+      Successfully run: branch_value_leaks.cc
+      Successfully compiled to Wasm: cmp.cc
+      Successfully compiled to Wasm: cmp_bool.cc
+      Successfully compiled to Wasm: core005.cc
+      Successfully compiled to Wasm: core006.cc
+      Successfully compiled to Wasm: core007.cc
+      Successfully compiled to Wasm: core009.cc
+      Successfully compiled to Wasm: core012.cc
+      Successfully compiled to Wasm: core019.cc
+      Successfully compiled to Wasm: core102.cc
+      Successfully run: core102.cc
+      Successfully compiled to Wasm: core110.cc
+      Successfully compiled to Wasm: core111.cc
+      Successfully compiled to Wasm: decr_in_if.cc
+      Successfully compiled to Wasm: div.cc
+      Successfully compiled to Wasm: do_nothing.cc
+      Successfully run: do_nothing.cc
+      Successfully compiled to Wasm: double__cmp.cc
+      Successfully compiled to Wasm: double__core012.cc
+      Successfully compiled to Wasm: double__inc_dec.cc
+      Successfully compiled to Wasm: fibonacci.cc
+      Successfully compiled to Wasm: good01.cc
+      Successfully compiled to Wasm: good03.cc
+      Successfully compiled to Wasm: good05.cc
+      Successfully compiled to Wasm: good07.cc
+      Successfully compiled to Wasm: good09.cc
+      Successfully compiled to Wasm: good11.cc
+      Successfully compiled to Wasm: good13.cc
+      Successfully compiled to Wasm: good15.cc
+      Successfully compiled to Wasm: good17.cc
+      Successfully compiled to Wasm: if_state_propagation.cc
+      Successfully compiled to Wasm: ineq_inclusive.cc
+      Successfully compiled to Wasm: redeclare_after_if.cc
+      Successfully compiled to Wasm: redeclare_after_while.cc
+      Successfully compiled to Wasm: redeclare_in_if.cc
+      Successfully compiled to Wasm: redeclare_in_while.cc
+      Successfully compiled to Wasm: return_42.cc
+      Successfully run: return_42.cc
+      Successfully compiled to Wasm: return_in_if_left.cc
+      Successfully compiled to Wasm: return_in_if_right.cc
+      Successfully compiled to Wasm: return_in_while.cc
+      Successfully compiled to Wasm: scopes_different_type_in_branches.cc
+      Successfully run: scopes_different_type_in_branches.cc
+      Successfully compiled to Wasm: scopes_if_leakage.cc
+      Successfully run: scopes_if_leakage.cc
+      Successfully compiled to Wasm: scopes_reuse_name.cc
+      Successfully compiled to Wasm: scopes_while_leakage.cc
+      Successfully run: scopes_while_leakage.cc
+      Successfully compiled to Wasm: void_expr_as_stmt.cc
+      Successfully compiled to Wasm: void_return_empty.cc
+      Successfully run: void_return_empty.cc
+
+  This was hard work, but there are now quite a number of programs that do compile to Wasm, 9 of which also pass the tests in the sense that they provide the expected outputs.
+
+I would suggest you continue with arithmetic and in/de-crements as well as loop and conditional as discussed in the lectures.
+      
+
+
