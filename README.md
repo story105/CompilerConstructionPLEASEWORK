@@ -101,7 +101,7 @@ For the second deadline complete the template file `test/Compiler.hs`.
 
 To get started, I suggest the following.
 
-- Change directory to `Compiler` and run `stack test`. You should see that no tests are passed.
+- Change directory to `Compiler` and run `./setup.sh` and `stack test`. You should see that no tests are passed.
 
 - The simplest test program is `test/good/return_42.cc`, displayed below.
 
