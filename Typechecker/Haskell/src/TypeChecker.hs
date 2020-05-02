@@ -112,7 +112,7 @@ checkMain ty _ = fail $ typeMismatchError (Id "main") Type_int ty
 In env' <- checkStm env stm ty we have
     env: the current environment
     stm: the stm to be checked for validity
-    ty: the return type of the function in which stm appears
+    ty: the return type of the function in which stm appears (needed for SReturn and SReturnVoid)
     env': the updated environment (stm may be variable declaration)
           or an error message (if stm is not valid)
 -}
