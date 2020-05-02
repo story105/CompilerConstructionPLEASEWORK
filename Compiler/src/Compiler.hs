@@ -1,6 +1,6 @@
 {-# LANGUAGE RecordWildCards, FlexibleInstances, FlexibleContexts, PatternSynonyms #-}
 
-module Compiler ( compile, test, pprint ) where
+module Compiler where
 
 import AbsCPP
 import ErrM
@@ -107,7 +107,7 @@ s_f64_eq = Atom "f64.eq"
 s_f64_ne = Atom "f64.ne"
 
 
--- sexp prints S-expressions as strings
+-- prints SExp's as lists of strings (= Wat programs)
 pprint_aux :: SExp -> [String]
 pprint_aux (Atom s) = [s]
 pprint_aux (List []) = ["()"]
@@ -367,7 +367,7 @@ compileExp _ (ENEq e1 e2)   =
         
 compileExp n (ETyped e _) = compileExp n e
 
--- delete after implementingt he above
+-- delete after implementing the above
 compileExp _ _ = return []
 
 compileArith e1 e2 intOp doubleOp = do
