@@ -108,7 +108,14 @@ checkMain Type_int [] = ok
 checkMain Type_int xs = fail $ "TYPE ERROR\n\nError, main cannot have arguments."
 checkMain ty _ = fail $ typeMismatchError (Id "main") Type_int ty
 
-
+{- 
+In env' <- checkStm env stm ty we have
+    env: the current environment
+    stm: the stm to be checked for validity
+    ty: the return type of the function in which stm appears
+    env': the updated environment (stm may be variable declaration)
+          or an error message (if stm is not valid)
+-}
 checkStm :: Env -> Stm -> Type -> Err Env 
 checkStm env (SExp e) ty = do
     inferTypeExp env e
@@ -124,6 +131,13 @@ Here need to go the missing cases. Once you have all cases you can delete the ne
 checkStm _ s _ = fail $ "Missing case in checkStm encountered:\n" ++ printTree s
 
 
+{- 
+In ty <- inferTypExp env e we have
+    env: the current environment
+    e: the expression 
+    ty: the type of e
+        or an error message (if we cannot assign a type to e)
+-}
 inferTypeExp :: Env -> Exp -> Err Type
 inferTypeExp env (EInt _) = return Type_int
 inferTypeExp env (ETimes e1 e2) = 
