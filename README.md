@@ -10,8 +10,6 @@ The assignment is detailed [here](http://www.grammaticalframework.org/ipl-book/a
 
 Also read [Typechecker/Haskell/README.md](https://github.com/ChapmanCPSC/compiler-assignments/blob/master/Typechecker/Haskell/README.md) and the [list with Haskell tips](https://hackmd.io/nVQP-fp-TEWUbp9kecaLTQ).
 
-
-
 ### Introductory Remarks
 
 To implement the typechecker I suggest that you use  Haskell. Java does not have algebraic data types or pattern matching.
