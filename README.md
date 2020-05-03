@@ -193,13 +193,13 @@ To get started, I suggest the following.
   In this case, `e` is a nested expression. So we continue the recursion with
 
       compileStm (SReturn e) = do
-      s_e <- compileExp Nested e
+        s_e <- compileExp Nested e
 
   and then return
 
       return $ 
-      s_e ++ 
-      [s_return]
+        s_e ++ 
+        [s_return]
 
   To see that this is correct run (in the Haskell REPL, see above)
 
@@ -207,7 +207,7 @@ To get started, I suggest the following.
   
   which indeed is the output you would expect from your knowledge of Webassembly.
 
-- Use `Cntr-d` to exit the Haskell REPL.
+- Use `Ctrl-d` (`Cmd` on Mac) to exit the Haskell REPL.
 
 - Putting things together, we can now run `stack test | grep Success` on the modified `Compiler.hs` and should obtain
 
