@@ -269,15 +269,17 @@ To get started, I suggest the following.
       Successfully compiled to Wasm: void_return_empty.cc
       Successfully run: void_return_empty.cc
 
-  This was hard work, but there are now quite a number of programs that do compile to Wasm, 9 of which also pass the tests in the sense that they provide the expected outputs.
+  This was hard work, but we see that we made some progress.
 
   Some further remarks:
-
-  - The reason that many programs compile "successfully" to Wasm is that `compileStm` and `compileExp` ignore all constructs that are not yet implemented. Look at `redeclare_in_in.wat` to see an example. So don't takes this as a sign of success. 
 
   - If you just want to compile a particular `return_42.cc` to Wat, run
 
       stack test test/good/return_42.cc
+
+  - The reason that many programs compile "successfully" to Wasm is that `compileStm` and `compileExp` ignore all constructs that are not yet implemented. Look at `redeclare_in_in.wat` to see an example. So don't take this as a sign of success. 
+
+  - The programs that run "successfully" have no specified output, so the fact that they pass the test does not mean automatically that they are compiled correctly. 
 
 I would suggest you continue with arithmetic and in/de-crements as well as loop and conditional as discussed in the lectures.
       
