@@ -269,7 +269,7 @@ To get started, I suggest the following.
       Successfully compiled to Wasm: void_return_empty.cc
       Successfully run: void_return_empty.cc
 
-  This was hard work, but we see that we made some progress.
+  This was hard work, but we see that we made some progress. If you want to see the work that remains run `stack test | grep Error`.
 
   Some further remarks:
 
