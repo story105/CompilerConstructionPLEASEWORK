@@ -207,7 +207,7 @@ To get started, I suggest the following.
 
       putStrLn $ pprint $ s_module [ s_func "main" [] s_i32 [ s_i32_const 1, s_return ] ]
 
-- Use `Ctrl-d` (`Cmd` on Mac) to exit the Haskell REPL.
+- Use `Ctrl-d` to exit the Haskell REPL.
 
 - Putting things together, we can now run `stack test | grep Success` on the modified `Compiler.hs` and should obtain
 
@@ -278,7 +278,7 @@ To get started, I suggest the following.
         stack test test/good/return_42.cc
 
     which will place `a.wat` in `Compiler`.
-  - The reason that many programs compile "successfully" to Wasm is that `compileStm` and `compileExp` have catch-all clauses that make the compiler ignore all constructs that are not yet implemented. Look at `redeclare_in_in.wat` to see an example of what that means. So don't take this as a sign of success. 
+  - The reason that many programs compile "successfully" to Wasm is that `compileStm` and `compileExp` have catch-all clauses that make the compiler ignore all constructs that are not yet implemented. Look at `redeclare_in_in.wat` to see an example of what that means. So don't take this as a sign of success without further investigation.
 
   - The programs that also run "successfully" have no specified output, so the fact that they pass the test does not mean automatically that they are compiled correctly. 
 
