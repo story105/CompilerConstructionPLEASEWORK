@@ -201,9 +201,11 @@ To get started, I suggest the following.
 
   To see that this is correct run (in the Haskell REPL, see above)
 
-      putStrLn $ pprint $ s_module ([s_i32_const 1]++[s_return])
+      putStrLn $ pprint $ List [s_i32_const, s_return]
   
-  which indeed is the output you would expect from your knowledge of Webassembly (but note that this produces only a fragment of a valid Webassembly program).
+  which indeed is the output you would expect from your knowledge of Webassembly. Btw, if you want the output to be not just a fragment but a valid Wat-program you can write instead
+
+      putStrLn $ pprint $ s_module [ s_func "main" [] s_i32 [ s_i32_const 1, s_return ] ]
 
 - Use `Ctrl-d` (`Cmd` on Mac) to exit the Haskell REPL.
 
