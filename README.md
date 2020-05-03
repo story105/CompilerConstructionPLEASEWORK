@@ -271,6 +271,14 @@ To get started, I suggest the following.
 
   This was hard work, but there are now quite a number of programs that do compile to Wasm, 9 of which also pass the tests in the sense that they provide the expected outputs.
 
+  Some further remarks:
+
+  - The reason that many programs compile "successfully" to Wasm is that `compileStm` and `compileExp` ignore all constructs that are not yet implemented. Look at `redeclare_in_in.wat` to see an example. So don't takes this as a sign of success. 
+
+  - If you just want to compile a particular `return_42.cc` to Wat, run
+
+      stack test test/good/return_42.cc
+
 I would suggest you continue with arithmetic and in/de-crements as well as loop and conditional as discussed in the lectures.
       
 
