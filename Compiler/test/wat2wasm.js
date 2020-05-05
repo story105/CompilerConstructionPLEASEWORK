@@ -6,9 +6,13 @@ const inputWat = process.argv[2];
 const outputWasm = inputWat.replace(/\.[^.]+$/, '.wasm');
 
 
-const wasmModule = wabt.parseWat(inputWat, readFileSync(inputWat, "utf8"));
-wasmModule.resolveNames();
-wasmModule.validate();
-const { buffer } = wasmModule.toBinary({});
+try{
+  const wasmModule = wabt.parseWat(inputWat, readFileSync(inputWat, "utf8"));
+  wasmModule.resolveNames();
+  wasmModule.validate();
+  const { buffer } = wasmModule.toBinary({});
 
-writeFileSync(outputWasm, Buffer.from(buffer));
+  writeFileSync(outputWasm, Buffer.from(buffer));
+} catch (error) {
+  console.error(error);
+}
