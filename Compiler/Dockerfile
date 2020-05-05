@@ -1,3 +1,6 @@
+# Jonathan Burns, May 05, 2020
+# Run as `docker build . -t compiler`.
+
 # The latest version of node is what breaks things.
 # Comment out the other 'FROM' an uncomment this
 # one to reproduce.
