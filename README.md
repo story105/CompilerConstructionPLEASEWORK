@@ -99,11 +99,7 @@ For the second deadline complete the template file `test/Compiler.hs`. To get st
 
 - Change directory to `Compiler` and run `./setup.sh` and `stack test`. You should see that no tests are passed.
 
-*Remark:* It turned out the current version is compatible with `node` version 10 but not with `node` version 14. You can either install `node` version 10 or you can use the docker file kindly provided by Jonathan Burns and run
-
-    docker build . -t compiler
-
-The first time you run it may take some time, but after that the overhead should not be too bad.
+*Remark:* (We fixed the problem described in this remark, but I leave it in as docker may still be useful for similar incompatibility problems that may arise in the future.) Our first version was compatible with `node` version 10 but not with `node` version 14. Jonathan Burns located and fixed this problem by  providing a dockerfile that you can run by `docker build . -t compiler`.
 
 - The simplest test program is `test/good/return_42.cc`, displayed below.
 
