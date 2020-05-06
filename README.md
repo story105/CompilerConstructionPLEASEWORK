@@ -279,7 +279,7 @@ The first time you run it may take some time, but after that the overhead should
 
   - If you just want to compile `return_42.cc` to Wat, run
 
-        stack test test/good/return_42.cc
+        stack run test/good/return_42.cc
 
     which will place `a.wat` in `Compiler`.
   - The reason that many programs compile "successfully" to Wasm is that `compileStm` and `compileExp` have catch-all clauses that make the compiler ignore all constructs that are not yet implemented. Look at `redeclare_in_in.wat` to see an example of what that means. So don't take this as a sign of success without further investigation.
