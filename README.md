@@ -93,11 +93,9 @@ Implement the remaining cases so that the interpreter passes all test programs.
 
 **starts April 30, first deadline May 1, second deadline May 10**
 
-For the first deadline do the exercise in [Lecture 12.1](https://github.com/alexhkurz/compiler-construction-2020/blob/master/lecture-12.1.md).
+For the first deadline follow the intstallation instructions and do the exercise of [Lecture 12.1](https://github.com/alexhkurz/compiler-construction-2020/blob/master/lecture-12.1.md).
 
-For the second deadline complete the template file `test/Compiler.hs`.
-
-To get started, I suggest the following.
+For the second deadline complete the template file `test/Compiler.hs`. To get started, I suggest the following.
 
 - Change directory to `Compiler` and run `./setup.sh` and `stack test`. You should see that no tests are passed.
 
@@ -209,7 +207,7 @@ The first time you run it may take some time, but after that the overhead should
 
       putStrLn $ pprint $ List [s_i32_const 1, s_return]
   
-  which indeed gives the output you would expect from your knowledge of Webassembly. Btw, if you want the output to be not just a Wat-fragment but a valid program you can write instead
+  which indeed gives the output you would expect from your knowledge of Webassembly (see Lectures 12.1 and 12.2). Btw, if you want the output to be not just a Wat-fragment but a valid program you can write instead
 
       putStrLn $ pprint $ s_module [ s_func "main" [] s_i32 [ s_i32_const 1, s_return ] ]
 
