@@ -207,7 +207,7 @@ The first time you run it may take some time, but after that the overhead should
 
   To see that this is correct run (in the Haskell REPL, see above)
 
-      putStrLn $ pprint $ List [s_i32_const, s_return]
+      putStrLn $ pprint $ List [s_i32_const 1, s_return]
   
   which indeed is the output you would expect from your knowledge of Webassembly. Btw, if you want the output to be not just a fragment but a valid Wat-program you can write instead
 
