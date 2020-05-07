@@ -131,7 +131,7 @@ possiblyMerge l x xs = concatHead "(" $
 
 pprint sexp = intercalate "\n" $ pprint_aux sexp
 
--- compile C++ to WASM
+-- compile C++ to Webassembly s_expressions
 compile :: Program -> String
 compile (PDefs []) = ""
 compile (PDefs defs) = pprint prog
