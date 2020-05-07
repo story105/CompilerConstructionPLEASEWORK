@@ -95,11 +95,17 @@ Implement the remaining cases so that the interpreter passes all test programs.
 
 For the first deadline follow the intstallation instructions and do the exercise of [Lecture 12.1](https://github.com/alexhkurz/compiler-construction-2020/blob/master/lecture-12.1.md).
 
-For the second deadline complete the template file `test/Compiler.hs`. To get started, I suggest the following.
+For the second deadline complete the template file `test/Compiler.hs`. 
+
+To get started on the second deadline, I suggest the following.
 
 - Change directory to `Compiler` and run `./setup.sh` and `stack test`. You should see that no tests are passed.
 
-*Remark:* (We fixed the problem described in this remark, but I leave it in as docker may still be useful for similar incompatibility problems that may arise in the future.) Our first version was compatible with `node` version 10 but not with `node` version 14. Jonathan Burns located and fixed this problem by  providing a dockerfile that you can run by `docker build . -t compiler`.
+*Remark:* (We fixed the problem described in this remark by adding a try-catch to `test\wat2wasm.js`, but I leave it in as docker may still be useful for similar incompatibility problems that may arise in the future.) Our first version was compatible with `node` version 10 but not version 14. Jonathan Burns located and fixed this problem by  providing a dockerfile that you can run by `docker build . -t compiler`.
+
+As always, we work by induction on the abstract syntax tree.
+
+### The cases of `EInt` and `SReturn`
 
 - The simplest test program is `test/good/return_42.cc`, displayed below.
 
@@ -212,64 +218,13 @@ For the second deadline complete the template file `test/Compiler.hs`. To get st
 - Putting things together, we can now run `stack test | grep Success` on the modified `Compiler.hs` and should obtain
 
       Successfully compiled to Wasm: ass_in_arith.cc
-      Successfully compiled to Wasm: ass_in_cmp.cc
-      Successfully compiled to Wasm: ass_many.cc
-      Successfully compiled to Wasm: ass_var_to_var.cc
-      Successfully run: ass_var_to_var.cc
-      Successfully compiled to Wasm: branch_value_leaks.cc
-      Successfully run: branch_value_leaks.cc
-      Successfully compiled to Wasm: cmp.cc
-      Successfully compiled to Wasm: cmp_bool.cc
-      Successfully compiled to Wasm: core005.cc
-      Successfully compiled to Wasm: core006.cc
-      Successfully compiled to Wasm: core007.cc
-      Successfully compiled to Wasm: core009.cc
-      Successfully compiled to Wasm: core012.cc
-      Successfully compiled to Wasm: core019.cc
-      Successfully compiled to Wasm: core102.cc
-      Successfully run: core102.cc
-      Successfully compiled to Wasm: core110.cc
-      Successfully compiled to Wasm: core111.cc
-      Successfully compiled to Wasm: decr_in_if.cc
-      Successfully compiled to Wasm: div.cc
-      Successfully compiled to Wasm: do_nothing.cc
-      Successfully run: do_nothing.cc
-      Successfully compiled to Wasm: double__cmp.cc
-      Successfully compiled to Wasm: double__core012.cc
-      Successfully compiled to Wasm: double__inc_dec.cc
-      Successfully compiled to Wasm: fibonacci.cc
-      Successfully compiled to Wasm: good01.cc
-      Successfully compiled to Wasm: good03.cc
-      Successfully compiled to Wasm: good05.cc
-      Successfully compiled to Wasm: good07.cc
-      Successfully compiled to Wasm: good09.cc
-      Successfully compiled to Wasm: good11.cc
-      Successfully compiled to Wasm: good13.cc
-      Successfully compiled to Wasm: good15.cc
-      Successfully compiled to Wasm: good17.cc
-      Successfully compiled to Wasm: if_state_propagation.cc
-      Successfully compiled to Wasm: ineq_inclusive.cc
-      Successfully compiled to Wasm: redeclare_after_if.cc
-      Successfully compiled to Wasm: redeclare_after_while.cc
-      Successfully compiled to Wasm: redeclare_in_if.cc
-      Successfully compiled to Wasm: redeclare_in_while.cc
+      <...>
       Successfully compiled to Wasm: return_42.cc
       Successfully run: return_42.cc
-      Successfully compiled to Wasm: return_in_if_left.cc
-      Successfully compiled to Wasm: return_in_if_right.cc
-      Successfully compiled to Wasm: return_in_while.cc
-      Successfully compiled to Wasm: scopes_different_type_in_branches.cc
-      Successfully run: scopes_different_type_in_branches.cc
-      Successfully compiled to Wasm: scopes_if_leakage.cc
-      Successfully run: scopes_if_leakage.cc
-      Successfully compiled to Wasm: scopes_reuse_name.cc
-      Successfully compiled to Wasm: scopes_while_leakage.cc
-      Successfully run: scopes_while_leakage.cc
-      Successfully compiled to Wasm: void_expr_as_stmt.cc
-      Successfully compiled to Wasm: void_return_empty.cc
+      <...>
       Successfully run: void_return_empty.cc
 
-  This was hard work, but we see that we made some progress. If you want to see the work that remains run `stack test | grep Error`.
+  This was hard work, but we see that we made some progress. If you want to see the programs that fail run `stack test | grep Error`.
 
   Some further remarks:
 
@@ -283,6 +238,29 @@ For the second deadline complete the template file `test/Compiler.hs`. To get st
   - The programs that also run "successfully" have no specified output, so the fact that they pass the test does not mean automatically that they are compiled correctly. 
 
 I would suggest you continue with arithmetic and in/de-crements as well as loop and conditional as discussed in the lectures.
-      
+
+### Write your own test programs
+
+Let us continue with arithmetic. For this it makes sense to write the smallest test program that contains the next challenge. I call it `easy_mult.cc`
+
+    int main() {
+      return 2*3;
+    }
+    
+For this we need to implement the case of `ETimes`. So we add 
+
+    compileExp n (ETimes e1 e2) = compileArith e1 e2 s_i32_mul s_f64_mul
+
+and run
+
+    stack build
+    stack run test/good/easy_mult.cc
+    more a.wat
+
+At this stage we carefully read the Webassembly program. Is it a correct translation of the C++ program?
+
+We could also run this program but not much would happen as it does not contain input or output.
+
+
 
 
