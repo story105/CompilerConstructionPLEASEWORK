@@ -241,25 +241,112 @@ I would suggest you continue with arithmetic and in/de-crements as well as loop 
 
 ### Write your own test programs
 
-Let us continue with arithmetic. For this it makes sense to write the smallest test program that contains the next challenge. I call it `easy_mult.cc`
+A good idea of how to develop the compiler is to add test programs that incrementally add features. Make a new folder `mytest`.
+  
+#### The case of `ETimes`
+
+Let us add to `mytest` the following program which I call `easy_mult.cc`.
 
     int main() {
       return 2*3;
     }
     
-For this we need to implement the case of `ETimes`. So we add 
+To compile this program we need to implement the case of `ETimes`. So we add 
 
     compileExp n (ETimes e1 e2) = compileArith e1 e2 s_i32_mul s_f64_mul
 
 and run
 
     stack build
-    stack run test/good/easy_mult.cc
+    stack run mytest/easy_mult.cc
     more a.wat
 
-At this stage we carefully read the Webassembly program. Is it a correct translation of the C++ program?
+At this stage we carefully read the Webassembly program `a.wat`. Is it a correct translation of the C++ program?
 
 We could also run this program but not much would happen as it does not contain input or output.
+
+#### The case of `EApp`
+
+Let us add to `mytest` the following program which I call `easy_mult2.cc`.
+
+    int main() {
+      printInt(2*3);
+      return 0;
+    }
+    
+`printInt` is implemented in the template, but we need function application. We start with
+
+    compileExp n (EApp (Id i) args) = do 
+        s_args <- mapM (compileExp Nested) args
+
+where `mapM` applies `compileExp Nested` to all elements of `args`. Then we need to push the arguments on the stack and call the function:
+
+        return $ 
+            concat s_args ++ 
+            [s_call i]
+
+Finally, there is one modification to make. If the function call is at the top level and returns something then we need to pop this result from the stack. So overall we obtain
+
+    compileExp n x@(EApp (Id i) args) = do 
+        s_args <- mapM (compileExp Nested) args
+        ty <- getType x
+        return $ 
+            concat s_args ++ 
+            [s_call i] ++
+            if n == TopLevel && ty /= Type_void then [s_drop] else []
+
+where the `x@` defines `x` as a shorthand for `(EApp (Id i) args)`. We compile now our test program
+
+    stack build
+    stack run mytest/easy_mult2.cc
+    more a.wat
+
+to obtain
+
+    (module
+     (import "env" "readInt" (func $readInt (result i32)))
+     (import "env" "readDouble" (func $readDouble (result f64)))
+     (import "env" "printInt" (func $printInt (param i32)))
+     (import "env" "printDouble" (func $printDouble (param f64)))
+     (func $main (result i32) 
+        (i32.const 2) 
+        (i32.const 3) 
+        i32.mul 
+        (call $printInt) 
+        (i32.const 0) 
+        return)
+     (export "main" (func $main)))
+
+which looks exactly as what we wanted: pushing 2 and 3, multiplying, printing.
+
+Apart from validating the program by reading it, we should also run it.
+
+    node test/wat2wasm.js a.wat
+    node test/run.js a.wasm
+
+This results in the output of `6`, as expected.
+
+#### Going on with `EAss` and `SInit`
+
+The next steps could be 
+
+    int main() {
+      int x;
+      x=2;
+      printInt(x*3);
+      return 0;
+    }
+    
+and
+    
+    int main() {
+      int x = 2*3;
+      printInt(x);
+      return 0;
+    }
+
+
+
 
 
 
