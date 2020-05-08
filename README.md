@@ -255,7 +255,13 @@ To compile this program we need to implement the case of `ETimes`. So we add
 
     compileExp n (ETimes e1 e2) = compileArith e1 e2 s_i32_mul s_f64_mul
 
-and run
+In order to find out that this is the right thing to do you need to do the following.
+
+- Read `compileArith` and understand (not necessarily all details, but the outlines of) what it is doing. In particular it will compile the code for `e1` and `e2`. 
+
+- Search and find in `Compiler.hs` the functions that generate the code for muliplication. 
+
+Now we are in the position to compile `easy_mult.cc` as follows.
 
     stack build
     stack run mytest/easy_mult.cc
@@ -326,7 +332,7 @@ Apart from validating the program by reading it, we should also run it.
 
 This results in the output of `6`, as expected.
 
-#### `EApp` revisited
+#### `EApp` revisited, the role of drop
 
 If we want to understand better how the `drop` works we can write two new test programs that show the difference. We let `drop.cc` be
 
@@ -350,6 +356,15 @@ and `no-drop.cc` be
 
 If  you compare the corresponding compiled `wat`-programs you see that if `f` is called on the top leve a `drop` is inserted and if `f` is called nested inside an expression this does not happen.
 
+**Additional Exercise:** For an example of what kind of error you may get without inserting `drop` follow the folowing steps.
+- Compile [no-drop2.cc]().
+- Check that it compiles to Wat and runs.
+- Inspect `a.wat`, find `drop` and delete `drop`.
+- On running the modified `a.wat` you should get the following Webassembly run-time error. 
+
+      a.wat:7:14: error: type mismatch in function, expected [] but got [i32]
+       (func $foo (call $bar))
+       
 #### Going on with `EAss` and `SInit`
 
 The next steps could be 
@@ -374,6 +389,7 @@ and
     stack build
     stack run mytest/my-program.cc
     more a.wat
+
     node test/wat2wasm.js a.wat
     node test/run.js a.wasm
 
