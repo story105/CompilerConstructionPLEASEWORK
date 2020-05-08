@@ -263,7 +263,7 @@ and run
 
 At this stage we carefully read the Webassembly program `a.wat`. Is it a correct translation of the C++ program?
 
-We could also run this program but not much would happen as it does not contain input or output.
+We could also run `a.wat` but not much would happen as it does not have input or output.
 
 #### The case of `EApp`
 
@@ -368,6 +368,14 @@ and
       printInt(x);
       return 0;
     }
+
+#### Summary of commands
+
+    stack build
+    stack run mytest/my-program.cc
+    more a.wat
+    node test/wat2wasm.js a.wat
+    node test/run.js a.wasm
 
 
 
