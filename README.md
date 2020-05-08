@@ -285,7 +285,7 @@ where `mapM` applies `compileExp Nested` to all elements of `args`. Then we need
             concat s_args ++ 
             [s_call i]
 
-Finally, there is one modification to make. If the function call is at the top level and returns something then we need to pop this result from the stack. So overall we obtain
+Finally, there is one modification to make. If the function call is at the top level and returns something then we need to pop this result from the stack. (For more on drop see [here](https://github.com/WebAssembly/design/blob/master/Semantics.md).) So overall we obtain
 
     compileExp n x@(EApp (Id i) args) = do 
         s_args <- mapM (compileExp Nested) args
@@ -325,6 +325,30 @@ Apart from validating the program by reading it, we should also run it.
     node test/run.js a.wasm
 
 This results in the output of `6`, as expected.
+
+#### `EApp` revisited
+
+If we want to understand better how the `drop` works we can write two new test programs that show the difference. We let `drop.cc` be
+
+    int main() {
+      f();
+    }
+    
+    int f() {
+        return 7;
+    }
+
+and `no-drop.cc` be
+
+    int main() {
+      return f();
+    }
+    
+    int f() {
+        return 7;
+    }
+
+If  you compare the corresponding compiled `wat`-programs you see that if `f` is called on the top leve a `drop` is inserted and if `f` is called nested inside an expression this does not happen.
 
 #### Going on with `EAss` and `SInit`
 
