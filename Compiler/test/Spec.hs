@@ -90,7 +90,7 @@ testProgramCompile f = do
       (out,err,s) <- runCommandStrWait cmd ""
       case s of
        ExitFailure x -> do
-            putStrLn $ color red $ "Error: Converting to wasm failed " ++ takeFileName f
+            putStrLn $ color red $ "Error: Converting to wasm failed for " ++ takeFileName f
             putStrLn $ color red $ head $ tail $ splitOn "Error: validate failed:" err
             return False
        ExitSuccess -> do
@@ -105,6 +105,7 @@ testProgramCompile f = do
           putStrLn $ color green $ "Successfully run: " ++ takeFileName f
           return True
         else do
+                putStrLn $ color red $ "Error: Wrong output of " ++ takeFileName f
                 putStrLn "Execution output:"
                 putStrLn $ color red $ out
                 putStrLn "Expected output:"
