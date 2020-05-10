@@ -258,11 +258,16 @@ compileStm SReturnVoid = return []
     -- use `pushPop $ compileStm s`
     -- use `[ s_block ... ]` and `[ s_loop ]`
     -- proceed as in fibonacci.wat
+
 -- compileStm (SBlock stms) = do
+    -- use pushpop as for SWhile
     -- use `mapM` to interate `compileStm` over the list `stms`
     -- you may want to use `concat :: [[a]] -> [a]` (hoogle it)
+    -- no need to use `s_block` since C++ blocks are just a way to do variable shadowing, which we already took care of with `collectDecls`
+
 -- compileStm s@(SIfElse cond s1 s2) = do
     -- we have to specify the return type of the if/then/else block
+
 -- delete the line below after implementing the above
 compileStm _ = return []
 
@@ -346,7 +351,7 @@ compileExp n ETrue = return $ if n == Nested then [s_i32_const 1] else []
 
 -- for the following use `compileArith`
 {-
-compileExp n (ETimes e1 e2) =  
+compileExp _ (ETimes e1 e2) =  
 compileExp _ (EDiv e1 e2)   =  
 compileExp _ (EPlus e1 e2)  =  
 compileExp _ (EMinus e1 e2) =  
