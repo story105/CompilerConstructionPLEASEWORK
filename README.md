@@ -93,9 +93,11 @@ Implement the remaining cases so that the interpreter passes all test programs.
 
 **starts April 30, first deadline May 1, second deadline May 10**
 
-For the first deadline follow the intstallation instructions and do the exercise of [Lecture 12.1](https://github.com/alexhkurz/compiler-construction-2020/blob/master/lecture-12.1.md).
+- For the first deadline follow the intstallation instructions and do the exercise of [Lecture 12.1](https://github.com/alexhkurz/compiler-construction-2020/blob/master/lecture-12.1.md).
 
-For the second deadline complete the template file `test/Compiler.hs`. 
+- (for 2021 only: Careful testing and development will require you to write your own test programs in addition to the ones in `test/good`. Make them available in a directory named `Compiler/mytest`. Two out of the nine points will be awarded for developing your own test suite. See below for examples on how to do this. If you want these new tests to be tested automatically upon calling `stack test` you can modify `test/Spec.hs` accordingly.)
+
+- For the second deadline complete the template file `test/Compiler.hs`. 
 
 To get started on the second deadline, I suggest the following.
 
