@@ -364,6 +364,72 @@ If  you compare the corresponding compiled `wat`-programs you see that if `f` is
 
       a.wat:7:14: error: type mismatch in function, expected [] but got [i32]
        (func $foo (call $bar))
+
+#### TopLevel vs Nested
+
+Find the data type `Nesting`. Its values are used to distinguish toplevel from nested expressions. 
+
+From the point of view of C++, toplevel expressions are those whose value can be ignored. From the point of view of the C++ grammar they arise from the rule
+
+    SExp.        Stm ::= Exp ";" ;
+
+which corresponds in the compiler to the equation
+
+    compileStm (SExp e) = compileExp TopLevel e
+
+To summarise, toplevel expressions are statements the value of which can be ignored.
+
+From the point of view of Webassembly, the distinction is important because at the end of a function, block, conditional, etc the stack must be empty. To illustrate the point let us look at 
+
+    int main () {
+    	int i;
+    	if (true) {
+    		++i;
+    	} else {
+    		i++;
+    	}
+    	return 0;
+    }
+
+which translates to Webassembly as follows.
+
+    (module
+     (import "env" "readInt" (func $readInt (result i32)))
+     (import "env" "readDouble" (func $readDouble (result f64)))
+     (import "env" "printInt" (func $printInt (param i32)))
+     (import "env" "printDouble" (func $printDouble (param f64)))
+     (func
+      $main
+      (result i32)
+      (local $ii$0 i32)
+      (i32.const 1)
+      (if
+       (then (local.get $ii$0) (i32.const 1) i32.add (local.set $ii$0))
+       (else (local.get $ii$0) (local.get $ii$0) (i32.const 1) i32.add (local.set $ii$0) drop)
+      )
+      (i32.const 0)
+      return
+     )
+     (export "main" (func $main))
+    )
+
+There is a lot of code to digest, so let us get through this step by step.
+
+- Read the `then`-branch of the Wat-program. Normally, if the pre-increment is nested as eg in `++i*2`, we would use `local.tee` instead of `local.set`, since the incremented value is needed on the stack (to be multiplied by `2` eg).
+
+    - But, in the particular case at hand, `++i` is not nested but at the toplevel. 
+
+    - **Exercise:** Replace in the `then`-branch `local.set` by `local.tee` and observe the error message you get when you compile to wasm.
+
+- Read the `else`-branch of the Wat-program. 
+
+    - After `(local.set $ii$0)` what is the top value on the stack?
+    
+    - Normally, if the post-increment is nested as eg in `i++*2`, this is the value we want on the top of the stack in order to continue with the multiplication. But, in the particular case at hand, `i++` is not nested but at the toplevel. 
+
+    - **Exercise**: Remove in the `else`-branch `drop` and observe the error message you get when you compile to wasm.
+
+The point of the exercises is that you may encounter similar error messages later on, so it is good to have seen them before.
        
 #### Going on with `EAss` and `SInit`
 

@@ -25,13 +25,18 @@ data SExp = Atom String | List [SExp] deriving Eq
 -- https://maurobringolf.ch/2018/04/learning-the-webassembly-type-system/
 
 -- helper functions to generate S-expressions
--- Haskell has typeinference, so we don't need to write all type signatures:
--- s_i32 :: Maybe SExp
+-- Haskell has typeinference, so we don't need to write all type signatures
+-- We put in some for readability. It may be a good exercise to add the others.
+
+s_void, s_f64, s_i32 :: Maybe SExp
 s_i32 = Just $ Atom "i32"
 s_f64 = Just $ Atom "f64"
 s_void = Nothing
 
+s_var :: String -> SExp
 s_var v = Atom ('$' : v)
+
+s_loop, s_block, s_module :: [SExp] -> SExp
 s_module xs = List (Atom "module":xs)
 s_block xs = List (Atom "block":xs)
 s_loop xs = List (Atom "loop":xs)
@@ -40,14 +45,18 @@ s_br, s_br_if :: Int -> SExp
 s_br l = List [Atom "br", Atom $ show l]
 s_br_if l = List [Atom "br_if", Atom $ show l]
 
-s_if_then_else ty if_case else_case = 
+-- first put the condition on the stack, then use s_if_then_else
+s_if_then_else :: Maybe SExp -> [SExp] -> [SExp] -> SExp
+s_if_then_else ty then_case else_case = 
     List $ [Atom "if"] ++ s_result ty ++
-        [List (Atom "then":if_case),
+        [List (Atom "then":then_case),
         List (Atom "else":else_case)]
 
 s_return = Atom "return"
 
+s_result :: Maybe SExp -> [SExp]
 s_result ty = maybe [] (\t -> [List [Atom "result", t]]) ty
+
 s_import nm in_typ res_typ = 
     List ([
         Atom "import", 
@@ -72,8 +81,9 @@ s_func nm in_typ res_typ body =
 s_local nm (Just ty) = List $ [Atom "local", s_var nm, ty]
 s_local_get nm = List [Atom "local.get", s_var nm]
 s_local_set nm = List [Atom "local.set", s_var nm]
+-- local.tee is like local.set but leaves the value on the stack
 s_local_tee nm = List [Atom "local.tee", s_var nm]
-s_drop = Atom "drop"
+s_drop = Atom "drop" -- drop pops a symbol from the stack
 
 s_call nm = List [Atom "call", s_var nm]
 
@@ -169,7 +179,7 @@ test = s_module [
         s_export "main"
     ]
 
--- turns a type in an S-expression
+-- turns a C++ type to an s_expression
 compileType :: Type -> Maybe SExp
 compileType Type_bool = s_i32
 compileType Type_int = s_i32
@@ -266,7 +276,10 @@ compileStm SReturnVoid = return []
     -- no need to use `s_block` since C++ blocks are just a way to do variable shadowing, which we already took care of with `collectDecls`
 
 -- compileStm s@(SIfElse cond s1 s2) = do
-    -- we have to specify the return type of the if/then/else block
+    -- compile the condition
+    -- use pushpop to compile the branches
+    -- use getReturn to get the type of the if/then/else block
+    -- put the condition on the stack, then use s_if_then_else
 
 -- delete the line below after implementing the above
 compileStm _ = return []
@@ -345,6 +358,7 @@ compileExp n ETrue = return $ if n == Nested then [s_i32_const 1] else []
 
 -- compileExp n (EIncr id@(EId i)) = do
     -- make a case distinction on whether the type of `EId i` is `Type_int` or `Type_double`
+    
 -- compileExp n (EPIncr id@(EId i)) = do
 -- compileExp n (EDecr id@(EId i)) = do
 -- compileExp n (EPDecr id@(EId i)) = do

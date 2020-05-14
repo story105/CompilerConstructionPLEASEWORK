@@ -34,10 +34,12 @@ type Sig = Map Id FunctionType
 type Context = Map Id Type
 type Env = (Sig, [Context])
 
+
 lookupFun :: Env -> Id -> Err FunctionType
 lookupFun (sig,_) id = case M.lookup id sig of
     Just ty -> return ty
     Nothing -> fail $ "TYPE ERROR\n\n" ++ printTree id ++ " was not declared."
+
 
 insertFun :: Env -> Id -> FunctionType -> Err Env
 insertFun (sig,ctxt) i t = do
@@ -53,6 +55,7 @@ lookupVar i (_,[]) = fail $ "TYPE ERROR\n\n" ++ printTree i ++ " was not declare
 lookupVar i (sig,c:ctxt) = case M.lookup i c of
     (Just f) -> return f
     Nothing -> lookupVar i (sig,ctxt)
+
 
 insertVar :: Env -> Id -> Type -> Err Env
 insertVar (_, []) _ _ = fail $ "Internal error, this should not happen."
@@ -125,8 +128,27 @@ checkStm env (SDecls ty' ids) ty =
 checkStm env (SReturn e) ty = do
     checkExp env e ty
     return env
-{-
-Here need to go the missing cases. Once you have all cases you can delete the next line which is only needed to catch all cases that are not yet implemented.
+
+-- checkStm env (SInit ty' i e) ty = do
+    -- similar to SDecls, but not need for foldM
+
+-- checkStm env SReturnVoid Type_void =
+-- the next case is only executed in case ty is not Type_void
+-- checkStm env SReturnVoid ty = do
+    -- return a typeMismatchError
+
+-- checkStm env (SWhile e stm) ty = do
+    -- use newBlock
+
+-- checkStm env (SBlock stms) ty = do
+    -- use newBlock
+    -- use foldM_ to fold checkStm over all stms
+
+-- checkStm env (SIfElse e stm1 stm2) ty = do
+    -- use newBlock in both branches
+
+{-   
+Once you have all cases you can delete the next line which is only needed to catch all cases that are not yet implemented.
 -}
 checkStm _ s _ = fail $ "Missing case in checkStm encountered:\n" ++ printTree s
 
@@ -140,8 +162,31 @@ In ty <- inferTypExp env e we have
 -}
 inferTypeExp :: Env -> Exp -> Err Type
 inferTypeExp env (EInt _) = return Type_int
-inferTypeExp env (ETimes e1 e2) = 
-    inferTypeOverloadedExp env (Alternative [Type_int,Type_double]) e1 [e2]
+-- inferTypeExp env (EDouble _) = 
+-- inferTypeExp env (EString _) = 
+-- inferTypeExp env (EId i) = 
+    -- use lookupVar 
+-- inferTypeExp env (EApp i exps) = do
+    -- use lookupFun
+    -- use forM_ to iterate checkExp over exps
+-- inferTypeExp env (EPIncr e) = 
+    -- use inferTypeOverloadedExp 
+-- inferTypeExp env (EPDecr e) = 
+-- inferTypeExp env (EIncr e) = 
+-- inferTypeExp env (EDecr e) = 
+-- inferTypeExp env (ETimes e1 e2) = 
+-- inferTypeExp env (EDiv e1 e2) = 
+-- inferTypeExp env (EPlus e1 e2) = 
+-- inferTypeExp env (EMinus e1 e2) = 
+-- inferTypeExp env (ELt e1 e2) = do
+-- inferTypeExp env (EGt e1 e2) = 
+-- inferTypeExp env (ELtEq e1 e2) = 
+-- inferTypeExp env (EGtEq e1 e2) = 
+-- inferTypeExp env (EEq e1 e2) = do
+-- inferTypeExp env (ENEq e1 e2) = 
+-- inferTypeExp env (EAnd e1 e2) = do
+-- inferTypeExp env (EOr e1 e2) = 
+
 inferTypeExp env (EAss e1 e2) = do
     ty <- inferTypeExp env e1
     checkExp env e2 ty
@@ -149,10 +194,14 @@ inferTypeExp env (EAss e1 e2) = do
 inferTypeExp env (ETyped e ty) = do
     checkExp env e ty
     return ty
+
+
+    
 {-
-Here need to go the missing cases. Once you have all cases you can delete the next line which is only needed to catch all cases that are not yet implemented.
+Once you have all cases you can delete the next line which is only needed to catch all cases that are not yet implemented.
 -}
 inferTypeExp _ e = fail $ "Missing case in inferTypeExp encountered:\n" ++ printTree e
+
 
 inferTypeOverloadedExp :: Env -> Alternative Type -> Exp -> [Exp] -> Err Type
 inferTypeOverloadedExp env (Alternative ts) e es = do
