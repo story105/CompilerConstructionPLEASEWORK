@@ -103,7 +103,7 @@ To get started on the second deadline, I suggest the following.
 
 - Change directory to `Compiler` and run `./setup.sh` and `stack test`. You should see that no tests are passed.
 
-*Remark:* (We fixed the problem described in this remark by adding a try-catch to `test\wat2wasm.js`, but I leave it in as docker may still be useful for similar incompatibility problems that may arise in the future.) Our first version was compatible with `node` version 10 but not version 14. Jonathan Burns located and fixed this problem by  providing a dockerfile that you can run by `docker build . -t compiler`.
+*Remark:* (We fixed the problem described in this remark by adding a try-catch to `test/wat2wasm.js`, but I leave it in as docker may still be useful for similar incompatibility problems that may arise in the future.) Our first version was compatible with `node` version 10 but not version 14. Jonathan Burns located this problem and fixed it by  providing a dockerfile that you can run by `docker build . -t compiler`.
 
 As always, we work by induction on the abstract syntax tree.
 
