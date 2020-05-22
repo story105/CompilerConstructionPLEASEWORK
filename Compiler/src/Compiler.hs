@@ -28,7 +28,7 @@ data SExp = Atom String | List [SExp] deriving Eq
 -- Haskell has typeinference, so we don't need to write all type signatures
 -- We put in some for readability. It may be a good exercise to add the others.
 
-s_void, s_f64, s_i32 :: Maybe SExp
+-- I dont like this =====> s_void, s_f64, s_i32 :: Maybe SExp
 s_i32 = Just $ Atom "i32"
 
 s_f64 = Just $ Atom "f64"
