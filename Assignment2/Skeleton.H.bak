@@ -1,0 +1,48 @@
+#ifndef SKELETON_HEADER
+#define SKELETON_HEADER
+/* You might want to change the above name. */
+
+#include "Absyn.H"
+
+
+class Skeleton : public Visitor
+{
+public:
+  void visitProgram(Program* p);
+  void visitDef(Def* p);
+  void visitArg(Arg* p);
+  void visitStm(Stm* p);
+  void visitExp(Exp* p);
+  void visitType(Type* p);
+  void visitPDefs(PDefs* p);
+  void visitDFun(DFun* p);
+  void visitADecl(ADecl* p);
+  void visitSExp(SExp* p);
+  void visitSReturn(SReturn* p);
+  void visitSBlock(SBlock* p);
+  void visitEInt(EInt* p);
+  void visitEDouble(EDouble* p);
+  void visitEString(EString* p);
+  void visitEId(EId* p);
+  void visitType_bool(Type_bool* p);
+  void visitType_int(Type_int* p);
+  void visitType_double(Type_double* p);
+  void visitType_void(Type_void* p);
+  void visitType_string(Type_string* p);
+  void visitListDef(ListDef* p);
+  void visitListArg(ListArg* p);
+  void visitListStm(ListStm* p);
+  void visitListExp(ListExp* p);
+  void visitListId(ListId* p);
+
+  void visit"Id"("Id" x);
+  void visit"Integer"("Integer" x);
+  void visit"Char"("Char" x);
+  void visit"Double"("Double" x);
+  void visit"String"("String" x);
+  void visit"Ident"("Ident" x);
+
+};
+
+
+#endif
